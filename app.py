@@ -35,6 +35,7 @@ for i in range (4):
 # Initialize the app - incorporate a Dash Mantine theme
 external_stylesheets = [dmc.theme.DEFAULT_COLORS]
 app = Dash(__name__, external_stylesheets=[dbc.themes.MINTY])
+server = app.server
 app.layout = html.Div(style={
 "background-image": 'linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url("assets/background.jpg")',} ,
     children= [dbc.Container(
