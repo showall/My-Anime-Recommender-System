@@ -17,7 +17,7 @@ import pickle
 import random
 import textwrap
 # Incorporate data
-df_anime = pd.read_csv('data/anime.csv')
+df_anime = pd.read_csv('data/anime2.csv')
 #print(len(df_anime))
 output = []
 for i in range (4):
