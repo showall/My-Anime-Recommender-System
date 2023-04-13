@@ -8,9 +8,10 @@ scikit-learn
 Installation
 
 # Clone the repository
-Install the dependencies with '''pip install -r requirements.txt'''
+Install the dependencies with 
+`pip install -r requirements.txt`
 Run the app with 
-'''python app.py'''
+`python app.py`
 
 # Usage
 
