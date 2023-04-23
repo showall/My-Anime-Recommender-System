@@ -164,11 +164,14 @@ def get_anime_names(anime_ids, df_content):
     # Your code here
     anime_names = []
     for id in anime_ids :
-        
+        try:
      #   article_names.append( df[df.article_id==id]["title"].unique()[0])    
       #  print(id)
-        anime_names.append(df_content[df_content.anime_id.astype("float")==id]["name"].values[0])
-    
+            anime_names.append(df_content[df_content.anime_id.astype("float")==id]["name"].values[0])
+            #print(id, df_content[df_content.anime_id.astype("float")==id]["name"].values[0])
+        except:
+            continue
+
     return anime_names # Return the article names associated with list of article ids
 
 

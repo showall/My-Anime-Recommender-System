@@ -167,20 +167,38 @@ class Recommender():
             df_final =  df_pivot_id.merge(df_to_pivot.groupby('user_id').agg("mean").reset_index().drop("anime_id", axis=1), on="user_id")
             df_final["score"] = df_final["count"] * df_final["rating"] 
             df_final=  df_final.sort_values("score", ascending = False).reset_index()
-            _id = df_final["user_id"][0]
-
+           # print(df_final)
+            new_list = []
+            for id in  df_final["user_id"]:
+                if id in self.user_ids_series:
+                    _id = id    
+                    break                
+         #   print (_id)    
             if _id in self.user_ids_series:
                 # Get the index of which row the user is in for use in U matrix
                 idx = np.where(self.user_ids_series == _id)[0][0]
 
                 # take the dot product of that row and the V matrix
+                
                 preds = np.dot(self.user_mat[idx,:],self.movie_mat)
 
                 # pull the top movies according to the prediction
-                indices = preds.argsort()[-rec_num:][::-1] #indices
+             #   print(preds)
+                indices = preds.argsort()[:][::-1] #indices
+             #   print(indices)
+              #  print(self.user_item_df)
+               # print(indices)
+               # rec_ids = [x for x in indices if x in self.movie_ids_series]
+              #  print(rec_ids)
+     
                 rec_ids = self.movie_ids_series[indices]
+                rec_ids = rec_ids[:rec_num+40]
+              #  print(rec_ids)
                 rec_names = rf.get_anime_names(rec_ids,self.df_content)
 
+                new_list = [x for x in rec_names if x not in anime_list]
+                rec_names = new_list[:rec_num]
+             #   print(rec_names)
             else:
                 rec_names , rec_ids= rf.get_top_anime(rec_num, self.df_content)
                 # if we don't have this user, give just top ratings back
@@ -206,7 +224,7 @@ if __name__ == '__main__':
     rec = r.Recommender()
 
     # fit recommender
-    rec.fit(rating_pth='data/rating2.csv', content_pth= 'data/anime2.csv', learning_rate=.003, iters=10)
+    rec.fit(rating_pth='data/rating2.csv', content_pth= 'data/anime2.csv', learning_rate=.004, iters=200, latent_features=6)
 
     with open("recommender.pkl", "wb") as p:
         pickle.dump(rec, p)
